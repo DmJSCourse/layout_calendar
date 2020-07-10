@@ -1,3 +1,81 @@
+$size: 100px;
+
+$margin: 1px;
+
+$numberOfDays: 
+  (
+    calendar-28: 28, 
+    calendar-29: 29,
+    calendar-30: 30, 
+    calendar-31: 31
+  );
+
+$startingDay: 
+  (
+    calendar-mon: 0, 
+    calendar-tue: 1, 
+    calendar-wed: 2, 
+    calendar-thu: 3, 
+    calendar-fri: 4, 
+    calendar-sat: 5, 
+    calendar-sun: 6
+  );
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 30px;
+}
+
 body {
   margin: 0;
+}
+
+.calendar {
+  
+  display: flex;
+  flex-wrap: wrap;
+  width: $size*7 + $margin*7;
+  margin: auto;
+  
+  > div {
+    width: $size;
+    height: $size;
+    border: 1px solid #000;
+    background: #eee;
+    margin-bottom: $margin;
+    margin-right: $margin;
+    justify-content: center;
+    align-items: center;
+    display: none;
+    
+    &:hover {
+      background-color: #ffbfcb;
+      cursor: pointer;
+      transform: translateY(-20px);
+      transition: 500ms;
+    }
+    
+    @for $date from 1 through 31 {
+      &:nth-child(#{$date}):after {
+        content: "#{$date}";
+      }
+    }
+    
+  }
+}
+
+@each $class, $amount in $numberOfDays {
+  .#{$class} div:nth-child(-n+#{$amount}) {
+    display: flex;
+  }
+}
+
+@each $class, $multiplier in $startingDay {
+  .#{$class} > div:first-child {
+    margin-left: $size*$multiplier + $margin*$multiplier;
+  }
 }
